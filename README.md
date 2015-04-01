@@ -1,5 +1,4 @@
-Simple generic FIFO buffer implementation
-for embedded C applications
+Simple generic FIFO buffer implementation for embedded C applications
 ===================================================
 
 This was developed out of a need for a simple
