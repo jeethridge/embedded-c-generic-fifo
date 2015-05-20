@@ -80,11 +80,20 @@
     BUF->read_count++;\
     BUF->start=(BUF->start+1)%BUF->size;
 
+#define FifoBuffer_peek(BUF,ELEM,INDEX)\
+    ELEM=BUF->elems[BUF->start+INDEX];
+
+#define FifoBuffer_flush(BUF)\
+    BUF->start = 0; \
+    BUF->end = 0; \
+    BUF->read_count=0;\
+    BUF->write_count=0;
 
 #define FifoBuffer_count(BUF) (BUF->write_count-BUF->read_count)
 #define FifoBuffer_is_full(BUF) (FifoBuffer_count(BUF)==BUF->size)
 #define FifoBuffer_is_empty(BUF) (FifoBuffer_count(BUF)==0)
 #define FifoBuffer_overflow(BUF) (FifoBuffer_count(BUF)>=BUF->size)
+
 
 /** FifoBuffer_Public_Macros
 *	@}

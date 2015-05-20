@@ -156,6 +156,9 @@ void FifoBuffer_fill_and_drain_test(void)
             assert((a.x == i) && (a.y == i));
 
         }
+
+        //ensure the lenght is zero when done
+        assert(FifoBuffer_count(my_fifo_p_a)==0);
     }
 
 }
@@ -195,6 +198,66 @@ void FifoBuffer_stress_test(void)
 }
 
 
+/*
+ *Test the peek functionality of the FifoBuffer
+ * */
+void FifoBuffer_peek_test(void)
+{
+    TypeAfifo my_fifo_a;
+    TypeAfifo* my_fifo_p_a=&my_fifo_a;
+    type_a_t a;
+    uint32_t i;
+
+    FifoBuffer_init(my_fifo_p_a,NUMEL,type_a_t, bufmem_a);
+
+    for (i = 0; i < NUMEL; i++) {
+        a.x = i;
+        a.y = i;
+        FifoBuffer_write(my_fifo_p_a, a);
+    }
+
+    for (i = 0; i < NUMEL; i++) {
+        FifoBuffer_peek(my_fifo_p_a, a,i);
+        assert((a.x == i) && (a.y == i));
+    }
+
+    assert(FifoBuffer_count(my_fifo_p_a)==NUMEL);
+
+}
+
+
+/*
+ *Test the flush functionality of the FifoBuffer
+ * */
+void FifoBuffer_flush_test(void)
+{
+    TypeAfifo my_fifo_a;
+    TypeAfifo* my_fifo_p_a=&my_fifo_a;
+    type_a_t a;
+    uint32_t i;
+
+    FifoBuffer_init(my_fifo_p_a,NUMEL,type_a_t, bufmem_a);
+
+    for (i = 0; i < NUMEL; i++) {
+        a.x = i;
+        a.y = i;
+        FifoBuffer_write(my_fifo_p_a, a);
+    }
+
+    FifoBuffer_flush(my_fifo_p_a);
+
+    assert(FifoBuffer_count(my_fifo_p_a)==0);
+
+    a.x = 17;
+    a.y = 17;
+    FifoBuffer_write(my_fifo_p_a, a);
+
+    assert(FifoBuffer_count(my_fifo_p_a)==1);
+    a.x=0;
+    a.y=0;
+    FifoBuffer_read(my_fifo_p_a, a);
+    assert((a.x == 17) && (a.y == 17));
+}
 
 int main() {
 
@@ -203,6 +266,8 @@ int main() {
     FifoBuffer_multiple_types_test();
     FifoBuffer_fill_and_drain_test();
     FifoBuffer_stress_test();
+    FifoBuffer_peek_test();
+    FifoBuffer_flush_test();
 
     return 0;
 }
