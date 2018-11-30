@@ -158,3 +158,6 @@ CTestTestfile.cmake
 .history
 
 # End of https://www.gitignore.io/api/c,cmake,clion,visualstudiocode
+
+## Binary for test suite
+FifoBuffer
